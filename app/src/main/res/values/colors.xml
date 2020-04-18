@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="black">#000000</color>
+    <color name="white">#FFFFFF</color>
+    <color name="RGB1">#44E60012</color>
+    <color name="RGB2">#44E66100</color>
+    <color name="RGB3">#44F39800</color>
+    <color name="RGB4">#44FCC800</color>
+    <color name="RGB5">#44FFF100</color>
+    <color name="RGB6">#44CFDB00</color>
+    <color name="RGB7">#448FC31F</color>
+    <color name="RGB8">#4422AC38</color>
+    <color name="RGB9">#44009944</color>
+    <color name="RGB10">#44009B6B</color>
+    <color name="RGB11">#44009E96</color>
+    <color name="RGB12">#4400A0C1</color>
+    <color name="RGB13">#4400A0E9</color>
+    <color name="RGB14">#440086D1</color>
+    <color name="RGB15">#440068B7</color>
+    <color name="RGB16">#4400479D</color>
+    <color name="RGB17">#441D2088</color>
+    <color name="RGB18">#44601986</color>
+    <color name="RGB19">#44920783</color>
+    <color name="RGB20">#44BE0081</color>
+    <color name="RGB21">#44E4007F</color>
+    <color name="RGB22">#44E5006A</color>
+    <color name="RGB23">#44E5004F</color>
+    <color name="RGB24">#44E60033</color>
+
+
+</resources>
