@@ -321,32 +321,7 @@ public class ClassSchedule extends AppCompatActivity {
             }
         });
 
-        LinearLayout weekScroll = findViewById(R.id.weekSelect);
-        Date date_ = new Date();
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTime(date_);
-        for(int i=0 ; i<52 ; i++){
-            calendar.add(Calendar.DATE,7);
-            int month = calendar.get(Calendar.MONTH);
-            int date = calendar.get(Calendar.DATE);
-
-            TextView newText = new TextView(this);
-            newText.setText(month+1+"/"+date);
-            newText.setClickable(true);
-            newText.setLayoutParams(new LinearLayout.LayoutParams(100,100));
-
-
-            final String index = calendar.get(Calendar.YEAR)+"-"+month+1+"-"+date+" 00:00:00";
-            newText.setOnClickListener(new TextView.OnClickListener(){
-                @Override
-                public void onClick(View view){
-                    createSchedule(index);
-                }
-            });
-
-            weekScroll.addView(newText);
-        }
-
+        createWeekSelection();
 
 
     }
@@ -440,6 +415,7 @@ public class ClassSchedule extends AppCompatActivity {
             e.printStackTrace();
         }
 
+        CleanSchedule();
 
         //schedule create here
         //get from sql
@@ -448,6 +424,89 @@ public class ClassSchedule extends AppCompatActivity {
         addView(5, 6, 7, "try", 17);
         addView(4, 4, 6, "try", 21);
 
+    }
+
+    private void createWeekSelection(){
+
+        LinearLayout weekScroll = findViewById(R.id.weekSelect);
+
+        Date date_ = new Date();
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date_);
+
+        for(int i=0 ; i<52 ; i++){
+            calendar.add(Calendar.DATE,7);
+            int month = calendar.get(Calendar.MONTH);
+            int date = calendar.get(Calendar.DATE);
+
+            month++;
+            LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(100,100);
+            lp.leftMargin = 1;
+            TextView newText = new TextView(this);
+            newText.setText(month+"/"+date);
+            newText.setClickable(true);
+            newText.setLayoutParams(lp);
+            newText.setBackgroundColor(Color.WHITE);
+
+            final String index = calendar.get(Calendar.YEAR)+"-"+month+"-"+date+" 00:00:00";
+            newText.setOnClickListener(new TextView.OnClickListener(){
+                @Override
+                public void onClick(View view){
+                    createSchedule(index);
+                }
+            });
+
+            weekScroll.addView(newText);
+        }
+    }
+
+    private void CleanSchedule(){
+
+        RelativeLayout beCleaned;
+
+        TextView tv1 = new TextView(this);
+        tv1.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT));
+        beCleaned = findViewById(R.id.Monday);
+        beCleaned.removeAllViews();
+        beCleaned.addView(tv1);
+
+        TextView tv2 = new TextView(this);
+        tv2.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT));
+        beCleaned = findViewById(R.id.Tuesday);
+        beCleaned.removeAllViews();
+        beCleaned.addView(tv2);
+
+        TextView tv3 = new TextView(this);
+        tv3.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT));
+        beCleaned = findViewById(R.id.Wednesday);
+        beCleaned.removeAllViews();
+        beCleaned.addView(tv3);
+
+        TextView tv4 = new TextView(this);
+        tv4.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT));
+        beCleaned = findViewById(R.id.Thursday);
+        beCleaned.removeAllViews();
+        beCleaned.addView(tv4);
+
+        TextView tv5 = new TextView(this);
+        tv5.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT));
+        beCleaned = findViewById(R.id.Friday);
+        beCleaned.removeAllViews();
+        beCleaned.addView(tv5);
+
+        TextView tv6 = new TextView(this);
+        tv6.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT));
+        beCleaned = findViewById(R.id.Saturday);
+        beCleaned.removeAllViews();
+        beCleaned.addView(tv6);
+
+        TextView tv7 = new TextView(this);
+        tv7.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT,RelativeLayout.LayoutParams.WRAP_CONTENT));
+        beCleaned = findViewById(R.id.Sunday);
+        beCleaned.removeAllViews();
+        beCleaned.addView(tv7);
+
+        return;
     }
 
 }

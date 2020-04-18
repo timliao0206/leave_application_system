@@ -10,35 +10,42 @@
     <TextView
         android:id="@+id/firstDay"
         style="@style/style_text_day"
+        android:layout_width="match_parent"
         android:text="周一" />
 
     <TextView
         android:id="@+id/secondDay"
         style="@style/style_text_day"
+        android:layout_width="match_parent"
         android:text="周二" />
 
     <TextView
         android:id="@+id/thirdDay"
         style="@style/style_text_day"
+        android:layout_width="match_parent"
         android:text="周三" />
 
     <TextView
         android:id="@+id/forthDay"
         style="@style/style_text_day"
+        android:layout_width="match_parent"
         android:text="周四" />
 
     <TextView
         android:id="@+id/fifthDay"
         style="@style/style_text_day"
+        android:layout_width="match_parent"
         android:text="周五" />
 
     <TextView
         android:id="@+id/sixthDay"
         style="@style/style_text_day"
+        android:layout_width="match_parent"
         android:text="周六" />
 
     <TextView
         android:id="@+id/seventhDay"
         style="@style/style_text_day"
+        android:layout_width="match_parent"
         android:text="周日" />
 </merge>
