@@ -1,6 +1,5 @@
 package com.example.leave_application_system;
 
-import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -29,7 +28,7 @@ public class PersonalHub extends AppCompatActivity {
     }
 
     public void class_schedule(View view){
-        Intent intent = new Intent(PersonalHub.this,ClassSchedule.class);
+        Intent intent = new Intent(PersonalHub.this, HubToRollCall.class);
         startActivity(intent);
         return;
     }

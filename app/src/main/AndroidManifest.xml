@@ -83,6 +83,13 @@
             android:parentActivityName=".PersonalHub">
 
         </activity>
+
+        <activity android:name=".HubToRollCall"
+            android:parentActivityName=".PersonalHub"></activity>
+
+        <activity android:name=".RollCall"
+            android:parentActivityName=".HubToRollCall"></activity>
+
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>
 
