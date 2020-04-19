@@ -441,12 +441,13 @@ public class ClassSchedule extends AppCompatActivity {
 
             month++;
             LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(100,100);
-            lp.leftMargin = 1;
+            lp.leftMargin = 3;
             TextView newText = new TextView(this);
             newText.setText(month+"/"+date);
             newText.setClickable(true);
             newText.setLayoutParams(lp);
-            newText.setBackgroundColor(Color.WHITE);
+            //I'm horrible at coloring
+            newText.setBackgroundColor(Color.YELLOW);
 
             final String index = calendar.get(Calendar.YEAR)+"-"+month+"-"+date+" 00:00:00";
             newText.setOnClickListener(new TextView.OnClickListener(){

@@ -88,6 +88,8 @@ public class LoginActivity extends FragmentActivity {
     private void signIn() {
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
+
+        //add infomation into GV
     }
 
     @Override
