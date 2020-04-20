@@ -2,6 +2,7 @@ package com.example.leave_application_system;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -17,8 +18,9 @@ public class HubToRollCall extends AppCompatActivity {
 
     }
 
-    public void manualRollCall(){
-
+    public void manualRollCall(View view){
+        Intent intent = new Intent(HubToRollCall.this,RollCall.class);
+        startActivity(intent);
     }
 
     public void goToSchedule(){
