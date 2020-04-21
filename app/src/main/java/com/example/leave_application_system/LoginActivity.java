@@ -105,7 +105,7 @@ public class LoginActivity extends FragmentActivity {
         }
     }
 
-
+    @Override
     protected void onStart() {
         GoogleSignInAccount account = GoogleSignIn.getLastSignedInAccount(this);
         if(account != null) {
