@@ -1,6 +1,7 @@
 package com.example.leave_application_system;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -35,27 +36,22 @@ public class HubToRollCall extends AppCompatActivity {
         startActivity(intent);
     }
 
-    static final int REQUEST_IMAGE = 1;
-    Uri photo = null;
+    static final int REQUEST_IMAGE = 1888;
+    Bitmap photo = null;
 
     public void takePhoto(View view){
         if (checkSelfPermission(Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED)
         {
             requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
-            return;
-        }
-
-
-        Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
-        if(intent.resolveActivity(getPackageManager()) != null){
+        }else{
+            Intent intent = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
             startActivityForResult(intent,REQUEST_IMAGE);
         }
 
-        Intent toRollCall = new Intent(HubToRollCall.this,RollCall.class);
-        Bundle bundle = new Bundle();
-        bundle.putParcelable("photo",photo);
-        toRollCall.putExtras(bundle);
-        startActivity(toRollCall);
+
+
+
+
     }
 
     @Override
@@ -78,16 +74,16 @@ public class HubToRollCall extends AppCompatActivity {
     }
 
     @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_IMAGE && resultCode == Activity.RESULT_OK) {
+            photo = (Bitmap) data.getExtras().get("data");
 
-        super.onActivityResult(requestCode,resultCode,data);
-
-        if (requestCode == REQUEST_IMAGE && resultCode == RESULT_OK) {
-            Bundle extras = data.getExtras();
-            photo = (Uri) extras.get(MediaStore.EXTRA_OUTPUT);
+            Intent toRollCall = new Intent(HubToRollCall.this,RollCall.class);
+            Bundle bundle = new Bundle();
+            bundle.putParcelable("photo",photo);
+            toRollCall.putExtras(bundle);
+            startActivity(toRollCall);
         }
-
-
     }
 
 }

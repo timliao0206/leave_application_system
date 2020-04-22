@@ -85,17 +85,14 @@
         </activity>
 
         <activity android:name=".HubToRollCall"
-            android:parentActivityName=".PersonalHub"
-            android:noHistory="false"></activity>
+            android:parentActivityName=".PersonalHub"></activity>
 
         <activity android:name=".RollCall"
-            android:parentActivityName=".HubToRollCall"
-            android:noHistory="false"></activity>
+            android:parentActivityName=".HubToRollCall"></activity>
 
     </application>
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.CAMERA"/>
-    <uses-feature android:name="android.hardware.camera"
-        android:required="false" />
+    <uses-feature android:name="android.hardware.camera" />
 
 </manifest>
