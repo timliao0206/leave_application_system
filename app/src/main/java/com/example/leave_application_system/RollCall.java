@@ -53,17 +53,23 @@ public class RollCall extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.roll_call);
 
+        Bitmap photo = null;
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            photo = extras.getParcelable("photo");
+        }
 
+        createStudentTable(photo);
+    }
+
+    private void createStudentTable(Bitmap photo){
+
+        //for all student , call createStudentRow
+        //change the number of totalStudent
 
         //tmp
         createStudentRow(null, 0, "Textview",true);
         createStudentRow(null, 1, "Textview2",false);
-    }
-
-    private void createStudentTable(){
-
-        //for all student , call createStudentRow
-        //change the number of totalStudent
     }
 
     private void createStudentRow(Bitmap image, int id, String name , boolean defaultAttendance){
