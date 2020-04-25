@@ -38,7 +38,8 @@ public class PersonalHub extends AppCompatActivity {
     }
 
     public void itinerary(View view){
-        //to do
+        Intent intent = new Intent(PersonalHub.this,Itinerary.class);
+        startActivity(intent);
     }
 
     public void announcement(View view){

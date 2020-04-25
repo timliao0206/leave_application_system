@@ -39,4 +39,12 @@
     <string name="back_to_main">返回主畫面</string>
     <string name="go_to_schedule">前往課表</string>
     <string name="manual_roll_call">手動點名</string>
+    <string name="sunday">週日</string>
+    <string name="monday">週一</string>
+    <string name="tuesday">週二</string>
+    <string name="wednesday">週三</string>
+    <string name="thursday">週四</string>
+    <string name="friday">週五</string>
+    <string name="saturday">週六</string>
+
 </resources>
