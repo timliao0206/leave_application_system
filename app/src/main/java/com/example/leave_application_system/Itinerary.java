@@ -2,8 +2,10 @@ package com.example.leave_application_system;
 
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -20,6 +22,10 @@ public class Itinerary extends AppCompatActivity {
 
         java.util.Calendar now = java.util.Calendar.getInstance();
         createCalendar(now);
+
+        now = Calendar.getInstance();
+
+        addEvent(0,now,"test");
     }
 
     private void createCalendar(java.util.Calendar current){
@@ -44,19 +50,19 @@ public class Itinerary extends AppCompatActivity {
             week.setId(weekCount);
 
             for(int i=0 ; i<7 ; i++) {
-                FrameLayout frameLayout;
+                LinearLayout linearLayout;
                 switch (current.get(Calendar.DAY_OF_WEEK)) {
-                    case 1:frameLayout = week.findViewById(R.id.Sunday);break;
-                    case 2:frameLayout = week.findViewById(R.id.Monday);break;
-                    case 3:frameLayout = week.findViewById(R.id.Tuesday);break;
-                    case 4:frameLayout = week.findViewById(R.id.Wednesday);break;
-                    case 5:frameLayout = week.findViewById(R.id.Thursday);break;
-                    case 6:frameLayout = week.findViewById(R.id.Friday);break;
-                    case 7:frameLayout = week.findViewById(R.id.Saturday);break;
-                    default:frameLayout = null;
+                    case 1:linearLayout = week.findViewById(R.id.Sunday);break;
+                    case 2:linearLayout = week.findViewById(R.id.Monday);break;
+                    case 3:linearLayout = week.findViewById(R.id.Tuesday);break;
+                    case 4:linearLayout = week.findViewById(R.id.Wednesday);break;
+                    case 5:linearLayout = week.findViewById(R.id.Thursday);break;
+                    case 6:linearLayout = week.findViewById(R.id.Friday);break;
+                    case 7:linearLayout = week.findViewById(R.id.Saturday);break;
+                    default:linearLayout = null;
                 }
 
-                TextView tv = (TextView) frameLayout.getChildAt(0);
+                TextView tv = (TextView) linearLayout.getChildAt(0);
                 tv.setText(""+current.get(Calendar.DATE));
 
                 if(i == 6){
@@ -91,6 +97,47 @@ public class Itinerary extends AppCompatActivity {
             }
         }
 
+    }
+
+    private TextView createEventTextView(){
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+
+        TextView tv = new TextView(this);
+        tv.setLayoutParams(params);
+        tv.setGravity(Gravity.CENTER);
+        tv.setTextColor(Color.WHITE);
+
+        return tv;
+    }
+
+    private void addEvent(int eventId , Calendar date , String name){
+
+        TextView event = createEventTextView();
+
+        //set properties
+        event.setText(name);
+        event.setBackgroundColor(Color.GREEN);
+
+        //insert into calendar
+        int week = date.get(Calendar.WEEK_OF_MONTH);
+        String day = "";
+        switch (date.get(Calendar.DAY_OF_WEEK)){
+            case 1 : day = "Sunday";break;
+            case 2 : day = "Monday";break;
+            case 3 : day = "Tuesday";break;
+            case 4 : day = "Wednesday";break;
+            case 5 : day = "Thursday";break;
+            case 6 : day = "Friday";break;
+            case 7 : day = "Saturday";break;
+        }
+
+        //int id = getResources().getIdentifier(""+week,"id",getPackageName());
+        LinearLayout weekRow = findViewById(week);
+
+        int dayId = getResources().getIdentifier(day,"id",getPackageName());
+        LinearLayout exactDay = weekRow.findViewById(dayId);
+
+        exactDay.addView(event);
     }
 
 }

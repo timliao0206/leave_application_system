@@ -11,28 +11,30 @@
         android:layout_weight="1"
         android:orientation="horizontal">
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/Sunday"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="0.5dp"
             android:layout_weight="1"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="in" />
-        </FrameLayout>
+        </LinearLayout>
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/Monday"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="0.5dp"
             android:layout_weight="1"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:orientation="vertical">
 
 
             <TextView
@@ -40,81 +42,86 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="TextView" />
-        </FrameLayout>
+        </LinearLayout>
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/Tuesday"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="0.5dp"
             android:layout_weight="1"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="TextView" />
-        </FrameLayout>
+        </LinearLayout>
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/Wednesday"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="0.5dp"
             android:layout_weight="1"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="TextView" />
-        </FrameLayout>
+        </LinearLayout>
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/Thursday"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="0.5dp"
             android:layout_weight="1"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="TextView" />
-        </FrameLayout>
+        </LinearLayout>
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/Friday"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginRight="0.5dp"
             android:layout_weight="1"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="TextView" />
-        </FrameLayout>
+        </LinearLayout>
 
-        <FrameLayout
+        <LinearLayout
             android:id="@+id/Saturday"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:background="@color/white">
+            android:background="@color/white"
+            android:orientation="vertical">
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:text="TextView" />
-        </FrameLayout>
+        </LinearLayout>
 
     </LinearLayout>
 </LinearLayout>
