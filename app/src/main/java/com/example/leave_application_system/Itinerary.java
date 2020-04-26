@@ -40,12 +40,8 @@ public class Itinerary extends AppCompatActivity {
 
         while(true){
 
-            View week = inflater.inflate(R.layout.week_layout,null);
+            View week = inflater.inflate(R.layout.week_layout,table,false);
             week.setId(weekCount);
-
-           /* LinearLayout.LayoutParams params =(LinearLayout.LayoutParams) week.getLayoutParams();
-            params.weight = 1f;
-            week.setLayoutParams(params);*/
 
             for(int i=0 ; i<7 ; i++) {
                 FrameLayout frameLayout;
@@ -61,13 +57,28 @@ public class Itinerary extends AppCompatActivity {
                 }
 
                 TextView tv = (TextView) frameLayout.getChildAt(0);
-                if (month == current.get(Calendar.MONTH)) {
-                    tv.setText(""+current.get(Calendar.DATE));
-                    tv.setTextColor(Color.BLACK);
-                } else {
-                    tv.setText(""+current.get(Calendar.DATE));
-                    tv.setTextColor(0xFF333333);
+                tv.setText(""+current.get(Calendar.DATE));
+
+                if(i == 6){
+                    if (month == current.get(Calendar.MONTH)) {
+                        tv.setTextColor(Color.BLUE);
+                    } else {
+                        tv.setTextColor(0x660000FF);
+                    }
+                }else if(i == 0){
+                    if (month == current.get(Calendar.MONTH)) {
+                        tv.setTextColor(Color.RED);
+                    } else {
+                        tv.setTextColor(0x66FF0000);
+                    }
+                }else{
+                    if (month == current.get(Calendar.MONTH)) {
+                        tv.setTextColor(Color.BLACK);
+                    } else {
+                        tv.setTextColor(0x66000000);
+                    }
                 }
+
 
                 current.add(Calendar.DATE,1);
             }
