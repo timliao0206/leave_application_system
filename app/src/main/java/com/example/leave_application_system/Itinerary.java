@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.ContextCompat;
 
 import java.util.Calendar;
 
@@ -116,7 +117,9 @@ public class Itinerary extends AppCompatActivity {
 
         //set properties
         event.setText(name);
-        event.setBackgroundColor(Color.GREEN);
+        String color = "RGB"+(eventId%24 +1)+"_FC";
+        int colorId = getResources().getIdentifier(color,"color",getPackageName());
+        event.setBackgroundResource(colorId);
 
         //insert into calendar
         int week = date.get(Calendar.WEEK_OF_MONTH);

@@ -30,5 +30,30 @@
     <color name="RGB23">#44E5004F</color>
     <color name="RGB24">#44E60033</color>
 
+    <color name="RGB1_FC">#FFE60012</color>
+    <color name="RGB2_FC">#FFE66100</color>
+    <color name="RGB3_FC">#FFF39800</color>
+    <color name="RGB4_FC">#FFFCC800</color>
+    <color name="RGB5_FC">#FFFFF100</color>
+    <color name="RGB6_FC">#FFCFDB00</color>
+    <color name="RGB7_FC">#FF8FC31F</color>
+    <color name="RGB8_FC">#FF22AC38</color>
+    <color name="RGB9_FC">#FF009944</color>
+    <color name="RGB10_FC">#FF009B6B</color>
+    <color name="RGB11_FC">#FF009E96</color>
+    <color name="RGB12_FC">#FF00A0C1</color>
+    <color name="RGB13_FC">#FF00A0E9</color>
+    <color name="RGB14_FC">#FF0086D1</color>
+    <color name="RGB15_FC">#FF0068B7</color>
+    <color name="RGB16_FC">#FF00479D</color>
+    <color name="RGB17_FC">#FF1D2088</color>
+    <color name="RGB18_FC">#FF601986</color>
+    <color name="RGB19_FC">#FF920783</color>
+    <color name="RGB20_FC">#FFBE0081</color>
+    <color name="RGB21_FC">#FFE4007F</color>
+    <color name="RGB22_FC">#FFE5006A</color>
+    <color name="RGB23_FC">#FFE5004F</color>
+    <color name="RGB24_FC">#FFE60033</color>
+
     <color name="darkGray">#333333</color>
 </resources>
