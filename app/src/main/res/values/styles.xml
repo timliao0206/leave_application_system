@@ -13,6 +13,10 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="calendarActionBar" parent="AppTheme.NoActionBar">
+
+    </style>
+
     <style name="style_text_day">
         <item name="android:gravity">center</item>
         <item name="android:layout_weight">1</item>

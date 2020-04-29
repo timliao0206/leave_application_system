@@ -1,5 +1,11 @@
 package com.example.leave_application_system;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.Gravity;
@@ -9,17 +15,25 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import java.util.Calendar;
 
 public class Itinerary extends AppCompatActivity {
+
+    int count = 0;
+
     @Override
     protected void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
         setContentView(R.layout.itinerary_layout);
+        getSupportActionBar().hide();
+        //Toolbar toolbar = findViewById(R.id.toolbar);
+        //setActionBar(toolbar);
 
         java.util.Calendar now = java.util.Calendar.getInstance();
         createCalendar(now);
@@ -27,15 +41,36 @@ public class Itinerary extends AppCompatActivity {
         now = Calendar.getInstance();
 
         addEvent(0,now,"test");
+
+        //Notify();
     }
 
     private void createCalendar(java.util.Calendar current){
 
+        //clear calendar
+        LinearLayout root = findViewById(R.id.calendar);
+        for(int i=0 ; i<root.getChildCount() ; i++){
+            LinearLayout child = (LinearLayout) root.getChildAt(i);
+            for(int j=0 ; j<child.getChildCount() ; j++){
+                if(child.getChildAt(j) instanceof LinearLayout){
+                    child.removeAllViews();
+                    root.removeViewAt(i);
+                    i--;
+                    break;
+                }
+            }
+        }
+
         LayoutInflater inflater = getLayoutInflater();
+
+        Calendar instance = Calendar.getInstance();
+        TextView topic = findViewById(R.id.this_month);
 
         //this push calendar to the first day we want
         boolean flag = false;
         int month = current.get(Calendar.MONTH);
+        topic.setText(""+(month+1)+"月");
+
         while((!flag) || (current.get(Calendar.DAY_OF_WEEK)!=1)){
             current.add(Calendar.DATE,-1);
 
@@ -65,7 +100,9 @@ public class Itinerary extends AppCompatActivity {
 
                 TextView tv = (TextView) linearLayout.getChildAt(0);
                 tv.setText(""+current.get(Calendar.DATE));
-
+                if(current.equals(instance)){
+                    tv.setBackgroundColor(0x6600A0C1);
+                }
                 if(i == 6){
                     if (month == current.get(Calendar.MONTH)) {
                         tv.setTextColor(Color.BLUE);
@@ -98,6 +135,22 @@ public class Itinerary extends AppCompatActivity {
             }
         }
 
+    }
+
+    public void lastMonth(View view){
+        count--;
+        Calendar createdtime = Calendar.getInstance();
+        createdtime.add(Calendar.MONTH,count);
+
+        createCalendar(createdtime);
+    }
+
+    public void nextMonth(View view){
+        count++;
+        Calendar createdtime = Calendar.getInstance();
+        createdtime.add(Calendar.MONTH,count);
+
+        createCalendar(createdtime);
     }
 
     private TextView createEventTextView(){
@@ -143,4 +196,36 @@ public class Itinerary extends AppCompatActivity {
         exactDay.addView(event);
     }
 
+    public void Notify() {
+        int NOTIFICATION_ID = 234;
+        NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            String CHANNEL_ID = "my_channel_01";
+            CharSequence name = "my_channel";
+            String Description = "This is my channel";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            mChannel.setDescription(Description);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            mChannel.setShowBadge(false);
+            notificationManager.createNotificationChannel(mChannel);
+        }
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "my_channel_01")
+                .setSmallIcon(R.mipmap.ic_launcher)
+                .setContentTitle("title")
+                .setContentText("message");
+
+        Intent resultIntent = new Intent(this, Itinerary.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(resultPendingIntent);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+    }
 }
