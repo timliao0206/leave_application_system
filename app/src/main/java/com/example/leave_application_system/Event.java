@@ -9,6 +9,7 @@ public class Event {
         name = "";
         start_time = null;
         end_time = null;
+        count ++;
     }
 
     public Event(int id ,String name ,Calendar start_time ,Calendar end_time){
@@ -18,6 +19,7 @@ public class Event {
             this.name = name;
             this.start_time = start_time;
             this.end_time = end_time;
+            count ++;
         }else{
             //if start time is after end time
             this.id = -1;
@@ -27,7 +29,24 @@ public class Event {
         }
     }
 
+    public Event(String name ,Calendar start_time ,Calendar end_time){
+        if(start_time.before(end_time) || start_time.equals(end_time)) {
+            //if start time is before end time
+            this.id = count;
+            this.name = name;
+            this.start_time = start_time;
+            this.end_time = end_time;
+            count ++;
+        }else{
+            //if start time is after end time
+            this.id = -1;
+            this.name = "";
+            this.start_time = null;
+            this.end_time = null;
+        }
+    }
 
+    private static int count = 0;
     //properties
     private int id;
     private String name;

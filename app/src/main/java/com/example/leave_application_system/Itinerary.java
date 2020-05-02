@@ -1,10 +1,13 @@
 package com.example.leave_application_system;
 
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -12,16 +15,21 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Itinerary extends AppCompatActivity {
 
@@ -108,8 +116,14 @@ public class Itinerary extends AppCompatActivity {
                     default:linearLayout = null;
                 }
 
-                int id = current.get(Calendar.DATE) + current.get(Calendar.MONTH)*100 + current.get(Calendar.YEAR)*10000;
+                final int id = current.get(Calendar.DATE) + current.get(Calendar.MONTH)*100 + current.get(Calendar.YEAR)*10000;
                 linearLayout.setId(id);
+                linearLayout.setOnClickListener(new View.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        dateOnClick(id);
+                    }
+                });
 
                 TextView tv = (TextView) linearLayout.getChildAt(0);
                 tv.setText(""+current.get(Calendar.DATE));
@@ -177,6 +191,97 @@ public class Itinerary extends AppCompatActivity {
 
         return tv;
     }
+
+    private void dateOnClick(int date){
+        LayoutInflater inflater = LayoutInflater.from(Itinerary.this);
+        View dialog = inflater.inflate(R.layout.add_event_dialog,null);
+
+        TextView start = dialog.findViewById(R.id.start);
+        TextView end = dialog.findViewById(R.id.end);
+
+        String date_in_string = "" + (date/10000) + "-" + ((date/100)%100) + "-" + (date%100);
+        start.setText(date_in_string);
+        end.setText(date_in_string);
+
+        start.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Calendar calendar = Calendar.getInstance();
+                    int year = calendar.get(Calendar.YEAR);
+                    int month = calendar.get(Calendar.MONTH);
+                    int day = calendar.get(Calendar.DAY_OF_MONTH);
+                    new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int day) {
+                            String dateTime = String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day);
+                            start.setText(dateTime);
+                        }
+
+                    }, year, month, day).show();
+            }
+        });
+
+        end.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    Calendar calendar = Calendar.getInstance();
+                    int year = calendar.get(Calendar.YEAR);
+                    int month = calendar.get(Calendar.MONTH);
+                    int day = calendar.get(Calendar.DAY_OF_MONTH);
+                    new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker view, int year, int month, int day) {
+                            String dateTime = String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day);
+                            end.setText(dateTime);
+                        }
+
+                    }, year, month, day).show();
+            }
+        });
+
+
+        new AlertDialog.Builder(Itinerary.this)
+                .setNegativeButton("cancel",null)
+                .setView(dialog)
+                .setPositiveButton("add", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            EditText et = findViewById(R.id.topic);
+
+                            if(et.getText() == null){
+                                Toast.makeText(Itinerary.this,"標題不可為空",Toast.LENGTH_LONG).show();
+                                return;
+                            }
+
+                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+                            Date start_date = sdf.parse(start.getText().toString());
+                            Date end_date = sdf.parse(end.getText().toString());
+
+                            Calendar start = Calendar.getInstance();
+                            start.setTime(start_date);
+
+                            Calendar end = Calendar.getInstance();
+                            end.setTime(end_date);
+
+                            if(start.after(end)){
+                                Toast.makeText(Itinerary.this,"日期有誤",Toast.LENGTH_LONG).show();
+                                return;
+                            }
+
+                            //need to add into somewhere in db
+                            Event event = new Event(et.getText().toString(),start,end);
+                            addEvent(event);
+
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                })
+                .show();
+    }
+
 
     private void addEvent(Event eve){
 
