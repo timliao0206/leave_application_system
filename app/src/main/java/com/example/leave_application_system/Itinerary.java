@@ -40,8 +40,18 @@ public class Itinerary extends AppCompatActivity {
 
         now = Calendar.getInstance();
 
-        addEvent(0,now,"test");
+        //testing
+        Calendar today = Calendar.getInstance();
+        Calendar five_days_later = Calendar.getInstance();
+        five_days_later.add(Calendar.DATE,5);
+        Event event = new Event(0,"six days",today,five_days_later);
+        addEvent(event);
 
+        Calendar two_days_ago = Calendar.getInstance();
+        two_days_ago.add(Calendar.DATE,-2);
+        today = Calendar.getInstance();
+        Event event2 = new Event(3,"我要確定我看到的是空白",two_days_ago,today);
+        addEvent(event2);
         //Notify();
     }
 
@@ -97,6 +107,9 @@ public class Itinerary extends AppCompatActivity {
                     case 7:linearLayout = week.findViewById(R.id.Saturday);break;
                     default:linearLayout = null;
                 }
+
+                int id = current.get(Calendar.DATE) + current.get(Calendar.MONTH)*100 + current.get(Calendar.YEAR)*10000;
+                linearLayout.setId(id);
 
                 TextView tv = (TextView) linearLayout.getChildAt(0);
                 tv.setText(""+current.get(Calendar.DATE));
@@ -154,46 +167,46 @@ public class Itinerary extends AppCompatActivity {
     }
 
     private TextView createEventTextView(){
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
+        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
 
         TextView tv = new TextView(this);
         tv.setLayoutParams(params);
+        tv.setMaxLines(1);
         tv.setGravity(Gravity.CENTER);
         tv.setTextColor(Color.WHITE);
 
         return tv;
     }
 
-    private void addEvent(int eventId , Calendar date , String name){
+    private void addEvent(Event eve){
 
-        TextView event = createEventTextView();
+        int eventId = eve.getId();
+        String name = eve.getName();
+        Calendar start_date = eve.getStartTime();
+        Calendar end_date = eve.getEndTime();
 
-        //set properties
-        event.setText(name);
-        String color = "RGB"+(eventId%24 +1)+"_FC";
-        int colorId = getResources().getIdentifier(color,"color",getPackageName());
-        event.setBackgroundResource(colorId);
+        if(start_date == null || end_date == null) return;
 
         //insert into calendar
-        int week = date.get(Calendar.WEEK_OF_MONTH);
-        String day = "";
-        switch (date.get(Calendar.DAY_OF_WEEK)){
-            case 1 : day = "Sunday";break;
-            case 2 : day = "Monday";break;
-            case 3 : day = "Tuesday";break;
-            case 4 : day = "Wednesday";break;
-            case 5 : day = "Thursday";break;
-            case 6 : day = "Friday";break;
-            case 7 : day = "Saturday";break;
+        for(;start_date.before(end_date) || start_date.equals(end_date) ; start_date.add(Calendar.DATE,1)) {
+
+            TextView event = createEventTextView();
+
+            //set properties
+            event.setText(name);
+            String color = "RGB"+(eventId%24 +1)+"_FC";
+            int colorId = getResources().getIdentifier(color,"color",getPackageName());
+            event.setBackgroundResource(colorId);
+
+            Calendar date = start_date;
+
+            int id = date.get(Calendar.DATE) + date.get(Calendar.MONTH)*100 + date.get(Calendar.YEAR)*10000;
+            LinearLayout exactDay = findViewById(id);
+
+            if(exactDay != null)
+                exactDay.addView(event);
+
         }
-
-        //int id = getResources().getIdentifier(""+week,"id",getPackageName());
-        LinearLayout weekRow = findViewById(week);
-
-        int dayId = getResources().getIdentifier(day,"id",getPackageName());
-        LinearLayout exactDay = weekRow.findViewById(dayId);
-
-        exactDay.addView(event);
     }
 
     public void Notify() {
