@@ -116,7 +116,7 @@ public class Itinerary extends AppCompatActivity {
                     default:linearLayout = null;
                 }
 
-                final int id = current.get(Calendar.DATE) + current.get(Calendar.MONTH)*100 + current.get(Calendar.YEAR)*10000;
+                final int id = current.get(Calendar.DATE) + current.get(Calendar.MONTH)*100 + 100 + current.get(Calendar.YEAR)*10000;
                 linearLayout.setId(id);
                 linearLayout.setOnClickListener(new View.OnClickListener(){
                     @Override
@@ -194,10 +194,10 @@ public class Itinerary extends AppCompatActivity {
 
     private void dateOnClick(int date){
         LayoutInflater inflater = LayoutInflater.from(Itinerary.this);
-        View dialog = inflater.inflate(R.layout.add_event_dialog,null);
+        View pop = inflater.inflate(R.layout.add_event_dialog,null);
 
-        TextView start = dialog.findViewById(R.id.start);
-        TextView end = dialog.findViewById(R.id.end);
+        TextView start = pop.findViewById(R.id.start);
+        TextView end = pop.findViewById(R.id.end);
 
         String date_in_string = "" + (date/10000) + "-" + ((date/100)%100) + "-" + (date%100);
         start.setText(date_in_string);
@@ -208,7 +208,7 @@ public class Itinerary extends AppCompatActivity {
             public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
                     int year = calendar.get(Calendar.YEAR);
-                    int month = calendar.get(Calendar.MONTH);
+                    int month = calendar.get(Calendar.MONTH) +1;
                     int day = calendar.get(Calendar.DAY_OF_MONTH);
                     new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
                         @Override
@@ -226,7 +226,7 @@ public class Itinerary extends AppCompatActivity {
             public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
                     int year = calendar.get(Calendar.YEAR);
-                    int month = calendar.get(Calendar.MONTH);
+                    int month = calendar.get(Calendar.MONTH) +1;
                     int day = calendar.get(Calendar.DAY_OF_MONTH);
                     new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
                         @Override
@@ -239,17 +239,16 @@ public class Itinerary extends AppCompatActivity {
             }
         });
 
-
         new AlertDialog.Builder(Itinerary.this)
                 .setNegativeButton("cancel",null)
-                .setView(dialog)
+                .setView(pop)
                 .setPositiveButton("add", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         try {
-                            EditText et = findViewById(R.id.topic);
+                            EditText et = pop.findViewById(R.id.topic);
 
-                            if(et.getText() == null){
+                            if(et.getText().toString() == ""){
                                 Toast.makeText(Itinerary.this,"標題不可為空",Toast.LENGTH_LONG).show();
                                 return;
                             }
@@ -305,7 +304,7 @@ public class Itinerary extends AppCompatActivity {
 
             Calendar date = start_date;
 
-            int id = date.get(Calendar.DATE) + date.get(Calendar.MONTH)*100 + date.get(Calendar.YEAR)*10000;
+            int id = date.get(Calendar.DATE) + date.get(Calendar.MONTH)*100 + 100 + date.get(Calendar.YEAR)*10000;
             LinearLayout exactDay = findViewById(id);
 
             if(exactDay != null)
