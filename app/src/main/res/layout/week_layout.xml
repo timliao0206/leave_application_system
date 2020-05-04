@@ -15,7 +15,6 @@
             android:id="@+id/Sunday"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="0.5dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:orientation="vertical">
@@ -31,7 +30,7 @@
             android:id="@+id/Monday"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="0.5dp"
+            android:layout_marginRight="0dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:orientation="vertical">
@@ -49,7 +48,7 @@
             android:id="@+id/Tuesday"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="0.5dp"
+            android:layout_marginRight="0dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:orientation="vertical">
@@ -66,7 +65,7 @@
             android:id="@+id/Wednesday"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="0.5dp"
+            android:layout_marginRight="0dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:orientation="vertical">
@@ -83,7 +82,7 @@
             android:id="@+id/Thursday"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="0.5dp"
+            android:layout_marginRight="0dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:orientation="vertical">
@@ -100,7 +99,7 @@
             android:id="@+id/Friday"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginRight="0.5dp"
+            android:layout_marginRight="0dp"
             android:layout_weight="1"
             android:background="@color/white"
             android:orientation="vertical">

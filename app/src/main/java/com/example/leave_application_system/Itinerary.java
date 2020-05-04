@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -46,20 +47,6 @@ public class Itinerary extends AppCompatActivity {
         java.util.Calendar now = java.util.Calendar.getInstance();
         createCalendar(now);
 
-        now = Calendar.getInstance();
-
-        //testing
-        Calendar today = Calendar.getInstance();
-        Calendar five_days_later = Calendar.getInstance();
-        five_days_later.add(Calendar.DATE,5);
-        Event event = new Event(0,"six days",today,five_days_later);
-        addEvent(event);
-
-        Calendar two_days_ago = Calendar.getInstance();
-        two_days_ago.add(Calendar.DATE,-2);
-        today = Calendar.getInstance();
-        Event event2 = new Event(3,"我要確定我看到的是空白",two_days_ago,today);
-        addEvent(event2);
         //Notify();
     }
 
@@ -239,16 +226,25 @@ public class Itinerary extends AppCompatActivity {
             }
         });
 
-        new AlertDialog.Builder(Itinerary.this)
-                .setNegativeButton("cancel",null)
-                .setView(pop)
-                .setPositiveButton("add", new DialogInterface.OnClickListener() {
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Itinerary.this);
+        alertDialogBuilder.setNegativeButton("cancel",null);
+        alertDialogBuilder.setView(pop);
+        alertDialogBuilder.setPositiveButton("add", null);
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+
+        alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
+            @Override
+            public void onShow(DialogInterface dialog) {
+
+                Button button = ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
+                button.setOnClickListener(new Button.OnClickListener(){
                     @Override
-                    public void onClick(DialogInterface dialog, int which) {
+                    public void onClick(View v) {
                         try {
                             EditText et = pop.findViewById(R.id.topic);
 
-                            if(et.getText().toString() == ""){
+                            if(et.getText().toString().equals("")){
                                 Toast.makeText(Itinerary.this,"標題不可為空",Toast.LENGTH_LONG).show();
                                 return;
                             }
@@ -276,9 +272,14 @@ public class Itinerary extends AppCompatActivity {
                         }catch (Exception e){
                             e.printStackTrace();
                         }
+
+                        dialog.dismiss();
                     }
-                })
-                .show();
+                });
+            }
+        });
+
+        alertDialog.show();
     }
 
 
