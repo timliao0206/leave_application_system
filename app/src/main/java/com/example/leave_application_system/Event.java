@@ -1,5 +1,9 @@
 package com.example.leave_application_system;
 
+import android.view.View;
+import android.widget.TextView;
+
+import java.util.ArrayList;
 import java.util.Calendar;
 
 public class Event {
@@ -10,6 +14,7 @@ public class Event {
         start_time = null;
         end_time = null;
         count ++;
+        subview_tag.clear();
     }
 
     public Event(int id ,String name ,Calendar start_time ,Calendar end_time){
@@ -20,12 +25,14 @@ public class Event {
             this.start_time = start_time;
             this.end_time = end_time;
             count ++;
+            subview_tag.clear();
         }else{
             //if start time is after end time
             this.id = -1;
             this.name = "";
             this.start_time = null;
             this.end_time = null;
+            subview_tag.clear();
         }
     }
 
@@ -36,6 +43,7 @@ public class Event {
             this.name = name;
             this.start_time = start_time;
             this.end_time = end_time;
+            this.subview_tag.clear();
             count ++;
         }else{
             //if start time is after end time
@@ -43,6 +51,7 @@ public class Event {
             this.name = "";
             this.start_time = null;
             this.end_time = null;
+            this.subview_tag.clear();
         }
     }
 
@@ -53,6 +62,7 @@ public class Event {
     private Calendar start_time;
     private Calendar end_time;
 
+    public ArrayList<String> subview_tag = new ArrayList<>();
 
     //get func
     public int getId(){
@@ -70,4 +80,5 @@ public class Event {
     public Calendar getEndTime(){
         return end_time;
     }
+
 }

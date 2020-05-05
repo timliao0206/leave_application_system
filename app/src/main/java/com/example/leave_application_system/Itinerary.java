@@ -297,6 +297,10 @@ public class Itinerary extends AppCompatActivity {
 
             TextView event = createEventTextView();
 
+            String tv_tag = "" + eve.getId() +" "+start_date.toString();
+            event.setTag(tv_tag);
+            eve.subview_tag.add(tv_tag);
+
             //set properties
             event.setText(name);
             String color = "RGB"+(eventId%24 +1)+"_FC";
