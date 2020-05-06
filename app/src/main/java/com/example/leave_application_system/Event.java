@@ -11,58 +11,36 @@ public class Event {
     public Event(){
         id = -1;
         name = "";
-        start_time = null;
-        end_time = null;
+        time = null;
         count ++;
-        subview_tag.clear();
+        tag_list.clear();
     }
 
-    public Event(int id ,String name ,Calendar start_time ,Calendar end_time){
-        if(start_time.before(end_time) || start_time.equals(end_time)) {
-            //if start time is before end time
-            this.id = id;
-            this.name = name;
-            this.start_time = start_time;
-            this.end_time = end_time;
-            count ++;
-            subview_tag.clear();
-        }else{
-            //if start time is after end time
-            this.id = -1;
-            this.name = "";
-            this.start_time = null;
-            this.end_time = null;
-            subview_tag.clear();
-        }
+    public Event(int id ,String name ,Calendar time){
+
+        this.id = id;
+        this.name = name;
+        this.time = time;
+        count ++;
+        tag_list.clear();
     }
 
-    public Event(String name ,Calendar start_time ,Calendar end_time){
-        if(start_time.before(end_time) || start_time.equals(end_time)) {
-            //if start time is before end time
-            this.id = count;
-            this.name = name;
-            this.start_time = start_time;
-            this.end_time = end_time;
-            this.subview_tag.clear();
-            count ++;
-        }else{
-            //if start time is after end time
-            this.id = -1;
-            this.name = "";
-            this.start_time = null;
-            this.end_time = null;
-            this.subview_tag.clear();
-        }
+    public Event(String name ,Calendar time){
+
+        this.id = count;
+        this.name = name;
+        this.time = time;
+        count ++;
+        tag_list.clear();
     }
 
     private static int count = 0;
     //properties
     private int id;
     private String name;
-    private Calendar start_time;
-    private Calendar end_time;
-
-    public ArrayList<String> subview_tag = new ArrayList<>();
+    private Calendar time;
+    private View view = null;
+    private ArrayList<String> tag_list = new ArrayList<>();
 
     //get func
     public int getId(){
@@ -73,12 +51,37 @@ public class Event {
         return name;
     }
 
-    public Calendar getStartTime(){
-        return start_time;
+    public Calendar getTime(){
+        return time;
     }
 
-    public Calendar getEndTime(){
-        return end_time;
+    //set func
+    public void setView(View view){
+        this.view = view;
+        return;
+    }
+
+    //additional func
+    public boolean addTag(String tag){
+        if(tag_list.contains(tag)) return false;
+
+        tag_list.add(tag);
+        return true;
+    }
+
+    public boolean containsTag(String tag){
+        return tag_list.contains(tag);
+    }
+
+    public boolean isVisible(){
+        return view.getVisibility() == View.VISIBLE;
+    }
+
+    public void setVisibility(boolean visibility){
+        if(visibility) view.setVisibility(View.VISIBLE);
+        else view.setVisibility(View.GONE);
+
+        return;
     }
 
 }

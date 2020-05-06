@@ -29,23 +29,31 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.content.ContextCompat;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Itinerary extends AppCompatActivity {
 
     int count = 0;
+
+    ArrayList<Event> event_list;
+    Map<String,Boolean> tag_map;
 
     @Override
     protected void onCreate(Bundle saveInstanceState){
         super.onCreate(saveInstanceState);
         setContentView(R.layout.itinerary_layout);
         getSupportActionBar().hide();
+        tag_map = new HashMap<>();
         //Toolbar toolbar = findViewById(R.id.toolbar);
         //setActionBar(toolbar);
 
         java.util.Calendar now = java.util.Calendar.getInstance();
         createCalendar(now);
+        addEvent(event_list);
 
         //Notify();
     }
@@ -84,6 +92,7 @@ public class Itinerary extends AppCompatActivity {
 
         int weekCount = 1;
         LinearLayout table = findViewById(R.id.calendar);
+        Calendar start_date = (Calendar) current.clone();
 
         while(true){
 
@@ -114,9 +123,11 @@ public class Itinerary extends AppCompatActivity {
 
                 TextView tv = (TextView) linearLayout.getChildAt(0);
                 tv.setText(""+current.get(Calendar.DATE));
-                if(current.equals(instance)){
+
+                if(current.get(Calendar.DATE) == instance.get(Calendar.DATE) && current.get(Calendar.MONTH) == instance.get(Calendar.MONTH)){
                     tv.setBackgroundColor(0x6600A0C1);
                 }
+
                 if(i == 6){
                     if (month == current.get(Calendar.MONTH)) {
                         tv.setTextColor(Color.BLUE);
@@ -149,6 +160,9 @@ public class Itinerary extends AppCompatActivity {
             }
         }
 
+        Calendar end_date = (Calendar) current.clone();
+
+        event_list = getEvent(start_date,end_date);
     }
 
     public void lastMonth(View view){
@@ -179,6 +193,34 @@ public class Itinerary extends AppCompatActivity {
         return tv;
     }
 
+    private ArrayList<Event> getEvent(Calendar start , Calendar end){
+
+        ArrayList<Event> event_list = new ArrayList<>();
+        event_list.clear();
+
+        //get Event from start to end
+        //while getting Event , add it's tag into tag_map and set boolean in map as true
+
+
+        return event_list;
+    }
+
+    private boolean setTagVisibility(String tag ,Boolean visible){
+        if(!tag_map.containsKey(tag)) return false;
+
+        tag_map.put(tag,visible);
+
+        for(int i = 0 ;i<event_list.size() ;i ++){
+            if(visible.equals(event_list.get(i).isVisible())) continue;
+
+            if(!event_list.get(i).containsTag(tag)) continue;
+
+            event_list.get(i).setVisibility(visible);
+        }
+
+        return true;
+    }
+
     private void dateOnClick(int date){
         LayoutInflater inflater = LayoutInflater.from(Itinerary.this);
         View pop = inflater.inflate(R.layout.add_event_dialog,null);
@@ -195,12 +237,12 @@ public class Itinerary extends AppCompatActivity {
             public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
                     int year = calendar.get(Calendar.YEAR);
-                    int month = calendar.get(Calendar.MONTH) +1;
+                    int month = calendar.get(Calendar.MONTH);
                     int day = calendar.get(Calendar.DAY_OF_MONTH);
                     new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year, int month, int day) {
-                            String dateTime = String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day);
+                            String dateTime = String.valueOf(year)+"-"+String.valueOf(month+1)+"-"+String.valueOf(day);
                             start.setText(dateTime);
                         }
 
@@ -213,12 +255,12 @@ public class Itinerary extends AppCompatActivity {
             public void onClick(View v) {
                     Calendar calendar = Calendar.getInstance();
                     int year = calendar.get(Calendar.YEAR);
-                    int month = calendar.get(Calendar.MONTH) +1;
+                    int month = calendar.get(Calendar.MONTH);
                     int day = calendar.get(Calendar.DAY_OF_MONTH);
                     new DatePickerDialog(v.getContext(), new DatePickerDialog.OnDateSetListener() {
                         @Override
                         public void onDateSet(DatePicker view, int year, int month, int day) {
-                            String dateTime = String.valueOf(year)+"-"+String.valueOf(month)+"-"+String.valueOf(day);
+                            String dateTime = String.valueOf(year)+"-"+String.valueOf(month+1)+"-"+String.valueOf(day);
                             end.setText(dateTime);
                         }
 
@@ -265,10 +307,18 @@ public class Itinerary extends AppCompatActivity {
                                 return;
                             }
 
+                            int id = -1;
                             //need to add into somewhere in db
-                            Event event = new Event(et.getText().toString(),start,end);
-                            addEvent(event);
-
+                            for(; start.before(end) || start.equals(end); start.add(Calendar.DATE,1)) {
+                                if(id == -1) {
+                                    Event event = new Event(et.getText().toString(), start);
+                                    id = event.getId();
+                                    addEvent(event);
+                                }else{
+                                    Event event = new Event(id,et.getText().toString(),start);
+                                    addEvent(event);
+                                }
+                            }
                         }catch (Exception e){
                             e.printStackTrace();
                         }
@@ -287,34 +337,56 @@ public class Itinerary extends AppCompatActivity {
 
         int eventId = eve.getId();
         String name = eve.getName();
-        Calendar start_date = eve.getStartTime();
-        Calendar end_date = eve.getEndTime();
-
-        if(start_date == null || end_date == null) return;
+        Calendar start_date = eve.getTime();
 
         //insert into calendar
-        for(;start_date.before(end_date) || start_date.equals(end_date) ; start_date.add(Calendar.DATE,1)) {
+
+        TextView event = createEventTextView();
+
+        eve.setView(event);
+
+        //set properties
+        event.setText(name);
+        String color = "RGB"+(eventId%24 +1)+"_FC";
+        int colorId = getResources().getIdentifier(color,"color",getPackageName());
+        event.setBackgroundResource(colorId);
+
+        Calendar date = start_date;
+
+        int id = date.get(Calendar.DATE) + date.get(Calendar.MONTH)*100 + 100 + date.get(Calendar.YEAR)*10000;
+        LinearLayout exactDay = findViewById(id);
+
+        if(exactDay != null)
+            exactDay.addView(event);
+
+    }
+
+    private void addEvent(ArrayList<Event> eve){
+
+        for(int i = 0 ; i<eve.size(); i++) {
+            int eventId = eve.get(i).getId();
+            String name = eve.get(i).getName();
+            Calendar start_date = eve.get(i).getTime();
+
+            //insert into calendar
 
             TextView event = createEventTextView();
 
-            String tv_tag = "" + eve.getId() +" "+start_date.toString();
-            event.setTag(tv_tag);
-            eve.subview_tag.add(tv_tag);
+            eve.get(i).setView(event);
 
             //set properties
             event.setText(name);
-            String color = "RGB"+(eventId%24 +1)+"_FC";
-            int colorId = getResources().getIdentifier(color,"color",getPackageName());
+            String color = "RGB" + (eventId % 24 + 1) + "_FC";
+            int colorId = getResources().getIdentifier(color, "color", getPackageName());
             event.setBackgroundResource(colorId);
 
             Calendar date = start_date;
 
-            int id = date.get(Calendar.DATE) + date.get(Calendar.MONTH)*100 + 100 + date.get(Calendar.YEAR)*10000;
+            int id = date.get(Calendar.DATE) + date.get(Calendar.MONTH) * 100 + 100 + date.get(Calendar.YEAR) * 10000;
             LinearLayout exactDay = findViewById(id);
 
-            if(exactDay != null)
+            if (exactDay != null)
                 exactDay.addView(event);
-
         }
     }
 
