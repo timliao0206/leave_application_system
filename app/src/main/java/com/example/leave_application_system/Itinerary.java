@@ -16,6 +16,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -55,7 +56,54 @@ public class Itinerary extends AppCompatActivity {
         createCalendar(now);
         addEvent(event_list);
 
+        tag_map.put("key1",true);
+        tag_map.put("key2",false);
+        tag_map.put("key3",true);
+
         //Notify();
+    }
+
+    public void lastPage(View view){
+        Intent intent = new Intent(Itinerary.this,PersonalHub.class);
+        startActivity(intent);
+        return;
+    }
+
+    public void tagChangeOnClick(View view){
+        LayoutInflater inflater = getLayoutInflater();
+        LinearLayout pop_view = (LinearLayout) inflater.inflate(R.layout.change_tag_dialog,null);
+
+        for(Map.Entry<String,Boolean> entry : tag_map.entrySet()){
+            CheckBox checkBox = new CheckBox(this);
+            checkBox.setText(entry.getKey());
+            checkBox.setChecked(entry.getValue());
+
+            //set size , weight , etc
+            LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+            checkBox.setLayoutParams(params);
+            checkBox.setTextSize(20);
+
+            pop_view.addView(checkBox);
+        }
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(Itinerary.this);
+        builder.setNegativeButton("cancel",null);
+        builder.setPositiveButton("change", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                for(int i = 0; i<pop_view.getChildCount(); i++){
+                    CheckBox checkBox = (CheckBox) pop_view.getChildAt(i);
+                    String text = checkBox.getText().toString();
+                    Boolean checked = checkBox.isChecked();
+
+                    setTagVisibility(text,checked);
+                }
+            }
+        });
+        builder.setView(pop_view);
+
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     private void createCalendar(java.util.Calendar current){
@@ -208,6 +256,8 @@ public class Itinerary extends AppCompatActivity {
     private boolean setTagVisibility(String tag ,Boolean visible){
         if(!tag_map.containsKey(tag)) return false;
 
+        if(tag_map.get(tag).equals(visible)) return true;
+
         tag_map.put(tag,visible);
 
         for(int i = 0 ;i<event_list.size() ;i ++){
@@ -272,12 +322,22 @@ public class Itinerary extends AppCompatActivity {
         alertDialogBuilder.setNegativeButton("cancel",null);
         alertDialogBuilder.setView(pop);
         alertDialogBuilder.setPositiveButton("add", null);
+        alertDialogBuilder.setNeutralButton("set Tag",null);
 
         AlertDialog alertDialog = alertDialogBuilder.create();
 
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
+                ArrayList<String> tag_list = new ArrayList<>();
+
+                Button neutralBotton = ((AlertDialog)alertDialog).getButton(AlertDialog.BUTTON_NEUTRAL);
+                neutralBotton.setOnClickListener(new Button.OnClickListener(){
+                    @Override
+                    public void onClick(View v){
+                        //TO-DO
+                    }
+                });
 
                 Button button = ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
                 button.setOnClickListener(new Button.OnClickListener(){
@@ -332,6 +392,10 @@ public class Itinerary extends AppCompatActivity {
         alertDialog.show();
     }
 
+    /*private ArrayList<String> createTagSelectionDialogAndReturnTags(){
+
+    }*/
+
 
     private void addEvent(Event eve){
 
@@ -356,8 +420,10 @@ public class Itinerary extends AppCompatActivity {
         int id = date.get(Calendar.DATE) + date.get(Calendar.MONTH)*100 + 100 + date.get(Calendar.YEAR)*10000;
         LinearLayout exactDay = findViewById(id);
 
-        if(exactDay != null)
+        if(exactDay != null) {
             exactDay.addView(event);
+            event_list.add(eve);
+        }
 
     }
 
