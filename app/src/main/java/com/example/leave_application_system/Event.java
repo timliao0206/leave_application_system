@@ -41,6 +41,7 @@ public class Event {
     private Calendar time;
     private View view = null;
     private ArrayList<String> tag_list = new ArrayList<>();
+    private ArrayList<String> visible_tag = new ArrayList<>();
 
     //get func
     public int getId(){
@@ -62,10 +63,11 @@ public class Event {
     }
 
     //additional func
-    public boolean addTag(String tag){
+    public boolean addTag(String tag, Boolean visible){
         if(tag_list.contains(tag)) return false;
 
         tag_list.add(tag);
+        if(visible) visible_tag.add(tag);
         return true;
     }
 
@@ -77,8 +79,19 @@ public class Event {
         return view.getVisibility() == View.VISIBLE;
     }
 
-    public void setVisibility(boolean visibility){
-        if(visibility) view.setVisibility(View.VISIBLE);
+    public void setTagVisibility(String tag,boolean visibility){
+        if(!containsTag(tag)) return;
+
+        if(visibility && visible_tag.contains(tag)) return;
+
+        if(!visibility && !visible_tag.contains(tag)) return;
+
+        if(!visibility && visible_tag.contains(tag)) visible_tag.remove(tag);
+
+        if(visibility && !visible_tag.contains(tag)) visible_tag.add(tag);
+
+
+        if(visible_tag.size() > 0) view.setVisibility(View.VISIBLE);
         else view.setVisibility(View.GONE);
 
         return;

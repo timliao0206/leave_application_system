@@ -49,4 +49,7 @@
     <string name="start_date">開始日期</string>
     <string name="end_date">結束日期</string>
     <string name="topic">標題</string>
+    <string name="set_tag">設定標籤</string>
+    <string name="create_new_tag">新增標籤</string>
+    <string name="tag_name">標籤名稱</string>
 </resources>

@@ -261,15 +261,15 @@ public class Itinerary extends AppCompatActivity {
         tag_map.put(tag,visible);
 
         for(int i = 0 ;i<event_list.size() ;i ++){
-            if(visible.equals(event_list.get(i).isVisible())) continue;
-
             if(!event_list.get(i).containsTag(tag)) continue;
 
-            event_list.get(i).setVisibility(visible);
+            event_list.get(i).setTagVisibility(tag,visible);
         }
 
         return true;
     }
+
+    ArrayList<String> selected_tag;
 
     private void dateOnClick(int date){
         LayoutInflater inflater = LayoutInflater.from(Itinerary.this);
@@ -277,6 +277,9 @@ public class Itinerary extends AppCompatActivity {
 
         TextView start = pop.findViewById(R.id.start);
         TextView end = pop.findViewById(R.id.end);
+
+        selected_tag = new ArrayList<>();
+        selected_tag.clear();
 
         String date_in_string = "" + (date/10000) + "-" + ((date/100)%100) + "-" + (date%100);
         start.setText(date_in_string);
@@ -318,26 +321,91 @@ public class Itinerary extends AppCompatActivity {
             }
         });
 
+        Button set_tag = pop.findViewById(R.id.set_tag);
+        set_tag.setOnClickListener(new Button.OnClickListener(){
+            @Override
+            public void onClick(View view){
+                View table = inflater.inflate(R.layout.add_tag_dialog,null);
+                LinearLayout linearLayout = table.findViewById(R.id.tag_selection_display);
+                for(Map.Entry<String,Boolean> entry : tag_map.entrySet()){
+                    CheckBox checkBox = new CheckBox(Itinerary.this);
+                    checkBox.setText(entry.getKey());
+                    checkBox.setChecked(false);
+
+                    LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                    checkBox.setLayoutParams(params);
+                    checkBox.setTextSize(20);
+
+                    linearLayout.addView(checkBox);
+                }
+
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(Itinerary.this);
+                builder.setNegativeButton("cancel",null);
+                builder.setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        for(int i = 0; i<linearLayout.getChildCount() ; i++){
+                            if(linearLayout.getChildAt(i) instanceof CheckBox){
+                                if(((CheckBox)linearLayout.getChildAt(i)).isChecked())
+                                    selected_tag.add(((CheckBox) linearLayout.getChildAt(i)).getText().toString());
+                            }
+                        }
+                    }
+                });
+
+                Button add_tag = table.findViewById(R.id.create_new_tag);
+                View dialog_view = inflater.inflate(R.layout.create_tag_dialog,null);
+                add_tag.setOnClickListener(new Button.OnClickListener(){
+                    @Override
+                    public void onClick(View v) {
+                        AlertDialog.Builder add_tag_builder = new AlertDialog.Builder(Itinerary.this);
+                        add_tag_builder.setNegativeButton("cancel",null);
+                        add_tag_builder.setPositiveButton("確認", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText et = dialog_view.findViewById(R.id.new_tag_name);
+                                String tag_name = et.getText().toString();
+                                tag_map.put(tag_name,true);
+
+
+                                //add to previous dialog
+                                CheckBox checkBox = new CheckBox(Itinerary.this);
+                                checkBox.setText(tag_name);
+                                checkBox.setChecked(true);
+
+                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                                checkBox.setLayoutParams(params);
+                                checkBox.setTextSize(20);
+
+                                linearLayout.addView(checkBox);
+                            }
+                        });
+                        add_tag_builder.setView(dialog_view);
+
+                        AlertDialog ad = add_tag_builder.create();
+                        ad.show();
+                    }
+                });
+
+                builder.setView(table);
+
+                AlertDialog alertDialog = builder.create();
+                alertDialog.show();
+            }
+        });
+
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(Itinerary.this);
         alertDialogBuilder.setNegativeButton("cancel",null);
         alertDialogBuilder.setView(pop);
         alertDialogBuilder.setPositiveButton("add", null);
-        alertDialogBuilder.setNeutralButton("set Tag",null);
+
 
         AlertDialog alertDialog = alertDialogBuilder.create();
 
         alertDialog.setOnShowListener(new DialogInterface.OnShowListener() {
             @Override
             public void onShow(DialogInterface dialog) {
-                ArrayList<String> tag_list = new ArrayList<>();
-
-                Button neutralBotton = ((AlertDialog)alertDialog).getButton(AlertDialog.BUTTON_NEUTRAL);
-                neutralBotton.setOnClickListener(new Button.OnClickListener(){
-                    @Override
-                    public void onClick(View v){
-                        //TO-DO
-                    }
-                });
 
                 Button button = ((AlertDialog) alertDialog).getButton(AlertDialog.BUTTON_POSITIVE);
                 button.setOnClickListener(new Button.OnClickListener(){
@@ -373,9 +441,11 @@ public class Itinerary extends AppCompatActivity {
                                 if(id == -1) {
                                     Event event = new Event(et.getText().toString(), start);
                                     id = event.getId();
+                                    for(int i=0 ; i<selected_tag.size() ; i++) event.addTag(selected_tag.get(i), tag_map.get(selected_tag.get(i)) );
                                     addEvent(event);
                                 }else{
                                     Event event = new Event(id,et.getText().toString(),start);
+                                    for(int i=0 ; i<selected_tag.size() ; i++) event.addTag(selected_tag.get(i), tag_map.get(selected_tag.get(i)) );
                                     addEvent(event);
                                 }
                             }
@@ -451,8 +521,10 @@ public class Itinerary extends AppCompatActivity {
             int id = date.get(Calendar.DATE) + date.get(Calendar.MONTH) * 100 + 100 + date.get(Calendar.YEAR) * 10000;
             LinearLayout exactDay = findViewById(id);
 
-            if (exactDay != null)
+            if (exactDay != null) {
                 exactDay.addView(event);
+                event_list.add(eve.get(i));
+            }
         }
     }
 

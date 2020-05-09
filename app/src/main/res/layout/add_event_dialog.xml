@@ -66,4 +66,17 @@
             android:text="TextView" />
     </LinearLayout>
 
+    <LinearLayout
+        android:id="@+id/tag_show"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"></LinearLayout>
+
+    <Button
+        android:id="@+id/set_tag"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="@string/set_tag" />
+
 </LinearLayout>
